@@ -43,9 +43,21 @@ export function Experience() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row sm:items-baseline justify-between">
-                  <span className="text-base text-muted-foreground">
-                    {exp.company}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-base text-muted-foreground">
+                      {exp.company}
+                    </span>
+                    {exp.referenceLink && (
+                      <a
+                        href={exp.referenceLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[10px] px-2 py-0.5 rounded-full bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 hover:bg-yellow-500/20 transition-colors"
+                      >
+                        Reference Letter ↗
+                      </a>
+                    )}
+                  </div>
                   {exp.location && (
                     <span className="text-xs text-muted-foreground mt-1 sm:mt-0">
                       {exp.period}
