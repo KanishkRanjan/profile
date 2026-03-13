@@ -69,10 +69,8 @@ export const DATA = {
     intro:
       "I am a second-year Computer Science student at Newton School of Technology, Pune, focused on bridging the gap between academic theory and industry-scale software development. My experience centers on contributing directly to major frameworks like Electron.js and building high-performance full-stack applications.",
     highlights: [
-      "Driven by the challenge of building robust systems—from e-commerce platforms to automated SaaS tools.",
-      "Developing platforms like **Ecoka** and **Eatka**, prioritizing performance and scalability using **React**, **Node.js**, and **PostgreSQL**.",
-      "Actively contributing to global open-source projects including **Electron.js**, **Chromium**, and **VS Code**.",
-      "Always looking for opportunities to collaborate on complex engineering challenges and innovative software solutions.",
+      "**Open Source Contributor @ElectronJS & Chromium | B.Tech AI/ML Student**",
+      "Best if you are focusing on your technical depth and contributions to major ecosystems.",
     ],
     philosophy:
       "I believe that the best products are built by people who have a diverse range of interests. It's the unique combination of technical depth and human perspective that allows us to create technology that actually resonates.",

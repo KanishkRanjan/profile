@@ -63,9 +63,9 @@ export function Hero() {
         }}
         className="text-muted-foreground leading-relaxed max-w-xl mx-auto"
       >
-        <ol className="space-y-4 text-base text-left list-decimal list-inside">
+        <div className="space-y-4 text-base text-center">
           {DATA.about.highlights.map((point, i) => (
-            <motion.li
+            <motion.div
               key={i}
               variants={{
                 hidden: { opacity: 0, x: -10 },
@@ -86,9 +86,9 @@ export function Hero() {
                   part
                 ),
               )}
-            </motion.li>
+            </motion.div>
           ))}
-        </ol>
+        </div>
       </motion.div>
     </section>
   );
