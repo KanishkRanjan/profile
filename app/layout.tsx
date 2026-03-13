@@ -17,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Kanishk Ranjan | Software Engineer & Builder",
-  metadataBase: new URL("https://kanishkranjan.dev"),
+  metadataBase: new URL("https://kanishkranjan.com"),
   description:
     "Portfolio of Kanishk Ranjan, a Software Engineer and B.Tech AI/ML student specializing in full-stack development, Electron.js, and open-source contributions. Discover projects, experience, and technical writing.",
   keywords: [
@@ -35,12 +35,14 @@ export const metadata: Metadata = {
     "Web Development",
     "Portfolio",
   ],
-  authors: [{ name: "Kanishk Ranjan", url: "https://github.com/KanishkRanjan" }],
+  authors: [
+    { name: "Kanishk Ranjan", url: "https://github.com/KanishkRanjan" },
+  ],
   creator: "Kanishk Ranjan",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://kanishkranjan.dev", // Ideally, replace with actual production URL if known. Using a plausible one for now.
+    url: "https://kanishkranjan.com",
     title: "Kanishk Ranjan | Software Engineer & Builder",
     description:
       "Portfolio of Kanishk Ranjan, a Software Engineer and B.Tech AI/ML student specializing in full-stack development, Electron.js, and open-source contributions.",
