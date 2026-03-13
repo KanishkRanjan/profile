@@ -16,8 +16,63 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kanishk Ranjan",
-  description: "Software Engineer & Builder",
+  title: "Kanishk Ranjan | Software Engineer & Builder",
+  metadataBase: new URL("https://kanishkranjan.dev"),
+  description:
+    "Portfolio of Kanishk Ranjan, a Software Engineer and B.Tech AI/ML student specializing in full-stack development, Electron.js, and open-source contributions. Discover projects, experience, and technical writing.",
+  keywords: [
+    "Kanishk Ranjan",
+    "Software Engineer",
+    "Full Stack Developer",
+    "Frontend Developer",
+    "Backend Developer",
+    "Electron.js Developer",
+    "Open Source Contributor",
+    "React Developer",
+    "Next.js Developer",
+    "Pune",
+    "Newton School of Technology",
+    "Web Development",
+    "Portfolio",
+  ],
+  authors: [{ name: "Kanishk Ranjan", url: "https://github.com/KanishkRanjan" }],
+  creator: "Kanishk Ranjan",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://kanishkranjan.dev", // Ideally, replace with actual production URL if known. Using a plausible one for now.
+    title: "Kanishk Ranjan | Software Engineer & Builder",
+    description:
+      "Portfolio of Kanishk Ranjan, a Software Engineer and B.Tech AI/ML student specializing in full-stack development, Electron.js, and open-source contributions.",
+    siteName: "Kanishk Ranjan Portfolio",
+    images: [
+      {
+        url: "/me.png", // Reusing the avatar as an OG image for now. Ideally, a specific OG image should be created.
+        width: 800,
+        height: 800,
+        alt: "Kanishk Ranjan",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Kanishk Ranjan | Software Engineer & Builder",
+    description:
+      "Portfolio of Kanishk Ranjan, a Software Engineer and B.Tech AI/ML student specializing in full-stack development and open-source.",
+    images: ["/me.png"],
+    creator: "@KanishkRanjn", // Assuming twitter handle, update if incorrect based on contacts
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
