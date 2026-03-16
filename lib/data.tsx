@@ -130,6 +130,26 @@ export const DATA = {
       role: "Contributor",
       contributions: [
         {
+          id: "PR #50188",
+          icon: GitPullRequest,
+          status: "open" as const,
+          description: [
+            "**test: add desktopCapturer window icon validation**: Introduced a new test suite to verify that window icons retrieved via desktopCapturer are both present and valid.",
+            "Specifically designed to prevent regressions of issue #48063, ensuring that changes in Apple's internal implementation do not break icon retrieval logic.",
+          ],
+          link: "https://github.com/electron/electron/pull/50188",
+        },
+        {
+          id: "PR #50261",
+          icon: GitPullRequest,
+          status: "merged" as const,
+          description: [
+            "**fix: backport macOS Tahoe app icon retrieval**: Backported a critical fix from Chromium to resolve an issue where running application icons were not correctly retrieved on macOS Tahoe.",
+            "Addresses internal Apple API changes by incorporating updated Chromium logic, ensuring consistent icon rendering across the latest macOS versions (Fixes #48063).",
+          ],
+          link: "https://github.com/electron/electron/pull/50261",
+        },
+        {
           id: "PR #49364",
           icon: GitPullRequest,
           status: "merged" as const,
@@ -172,7 +192,7 @@ export const DATA = {
         {
           id: "PR #49219",
           icon: GitPullRequest,
-          status: "open" as const,
+          status: "closed" as const,
           description: [
             "**fix: resolve appIcon error in desktopCapturer**: Solved a high-DPI asset loss issue on macOS where window icons returned by `desktopCapturer` were low resolution (32x32).",
             "Created a local copy of window icon utility logic to enforce a target size of 128x128, ensuring Electron receives sharp icons without altering upstream Chromium files.",
@@ -388,17 +408,23 @@ export const DATA = {
   ],
   starProjects: [
     {
-      name: "ChainLens",
-      role: "Creator",
-      year: "2026",
+      name: "pfEatka (Perfect Easy Anytime Test)",
+      role: "Lead Software Engineer",
+      year: "2023",
       description: [
-        "**Bitcoin transaction & block analysis tool** with a visual explorer for decoding raw hex data into human-readable transaction breakdowns.",
-        "Implemented a custom binary parser in JavaScript that decodes raw Bitcoin block data, extracting transaction inputs, outputs, witness data, and script types.",
-        "Built a web interface with EJS templating and Express that lets users paste raw hex or upload block files for instant visual analysis.",
-        "Supports SegWit and legacy transaction formats, with automatic fee calculation and script classification (P2PKH, P2SH, P2WPKH, etc.).",
+        "**High-performance desktop testing suite** built with Java and JavaFX, featuring a custom-rendered GUI designed for resource efficiency and low-latency interaction.",
+        "Optimized rendering performance by implementing a consistent 60 FPS frame-update cycle and selective canvas refreshing, ensuring smooth UI transitions regardless of system load.",
+        "Architected the application using a strict MVC (Model-View-Controller) design pattern to maintain separation of concerns and scalability in complex state management.",
+        "Developed custom event-handling logic within the JavaFX canvas to support advanced user interactions and real-time assessment feedback.",
       ],
-      tech: ["Node.js", "Express", "JavaScript", "EJS"],
-      link: "https://github.com/KanishkRanjan/ChainLens",
+      tech: [
+        "Java",
+        "JavaFX",
+        "MVC Architecture",
+        "Desktop Optimization",
+        "Custom GUI",
+      ],
+      link: "https://www.linkedin.com/posts/kanishkranjan_the-value-of-effort-and-resilience-shines-activity-7187714753358659584-TBgS",
     },
     {
       name: "TestKa",
@@ -425,25 +451,6 @@ export const DATA = {
       ],
       tech: ["Node.js", "Express", "MongoDB", "Mongoose", "EJS", "JavaScript"],
       link: "https://www.linkedin.com/posts/kanishkranjan_webdevelopment-fullstack-techprojects-activity-7228267123389739009-Pkvx",
-    },
-    {
-      name: "pfEatka (Perfect Easy Anytime Test)",
-      role: "Lead Software Engineer",
-      year: "2023",
-      description: [
-        "**High-performance desktop testing suite** built with Java and JavaFX, featuring a custom-rendered GUI designed for resource efficiency and low-latency interaction.",
-        "Optimized rendering performance by implementing a consistent 60 FPS frame-update cycle and selective canvas refreshing, ensuring smooth UI transitions regardless of system load.",
-        "Architected the application using a strict MVC (Model-View-Controller) design pattern to maintain separation of concerns and scalability in complex state management.",
-        "Developed custom event-handling logic within the JavaFX canvas to support advanced user interactions and real-time assessment feedback.",
-      ],
-      tech: [
-        "Java",
-        "JavaFX",
-        "MVC Architecture",
-        "Desktop Optimization",
-        "Custom GUI",
-      ],
-      link: "https://www.linkedin.com/posts/kanishkranjan_the-value-of-effort-and-resilience-shines-activity-7187714753358659584-TBgS",
     },
   ],
   techStack: {
@@ -638,7 +645,7 @@ export const DATA = {
   ],
   stats: [
     {
-      value: "8+",
+      value: "7+",
       label: "Years Coding",
       detail: "Started at 13",
       icon: Terminal,
