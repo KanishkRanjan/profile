@@ -70,6 +70,7 @@ export const DATA = {
       "I am a second-year Computer Science student at Newton School of Technology, Pune, focused on bridging the gap between academic theory and industry-scale software development. My experience centers on contributing directly to major frameworks like Electron.js and building high-performance full-stack applications.",
     highlights: [
       "**Open Source Contributor @ElectronJS & Chromium | B.Tech AI/ML Student**",
+      "Extremely passionate about learning. If you give me a task, consider it done.",
     ],
     philosophy:
       "I believe that the best products are built by people who have a diverse range of interests. It's the unique combination of technical depth and human perspective that allows us to create technology that actually resonates.",
@@ -78,7 +79,7 @@ export const DATA = {
       github: "https://github.com/KanishkRanjan",
       email: "mailto:kanishkranjan17@gmail.com",
       cal: "https://cal.com/kanishk-ranjan-chzi6x",
-      youtube: "https://www.youtube.com/@kanishkranjan7459",
+      x: "https://x.com/KanishkRanjan2",
       discord: "https://discord.com/users/kanishkranjan",
     },
   },

@@ -51,7 +51,7 @@ export function ATSView() {
           <br />
           {project.contributions.map((contrib, i) => (
             <div key={i}>
-              <div>{`* [${contrib.id}](${contrib.link}) - ${contrib.status === "merged" ? "Merged" : "Open"}`}</div>
+              <div>{`* [${contrib.id}](${contrib.link}) - ${contrib.status === "merged" ? "Merged" : contrib.status === "closed" ? "Closed" : "Open"}`}</div>
               {contrib.description.map((desc, j) => (
                 <div
                   key={j}
@@ -144,8 +144,8 @@ export function ATSView() {
         {DATA.about.connect.cal && (
           <div>{`- [Cal.com Schedule](${DATA.about.connect.cal})`}</div>
         )}
-        {DATA.about.connect.youtube && (
-          <div>{`- [YouTube](${DATA.about.connect.youtube})`}</div>
+        {DATA.about.connect.x && (
+          <div>{`- [X/Twitter](${DATA.about.connect.x})`}</div>
         )}
         {DATA.about.connect.discord && (
           <div>{`- [Discord](${DATA.about.connect.discord})`}</div>

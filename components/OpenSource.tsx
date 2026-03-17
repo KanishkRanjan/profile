@@ -58,6 +58,8 @@ export function OpenSource() {
                           className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${
                             item.status === "merged"
                               ? "bg-purple-500/10 text-purple-500"
+                              : item.status === "closed"
+                              ? "bg-red-500/10 text-red-500"
                               : "bg-green-500/10 text-green-500"
                           }`}
                         >

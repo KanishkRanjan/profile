@@ -6,12 +6,12 @@ import {
   Mail,
   Calendar,
   QrCode,
-  Youtube,
   Disc,
   User,
   Bot,
   X,
 } from "lucide-react";
+import { SiX } from "react-icons/si";
 import QRCode from "react-qr-code";
 import { motion, AnimatePresence } from "framer-motion";
 import { DATA } from "@/lib/data";
@@ -178,7 +178,7 @@ export function FloatingNav() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <a
-                    href={DATA.about.connect.youtube}
+                    href={DATA.about.connect.x}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -187,11 +187,11 @@ export function FloatingNav() {
                       size="icon"
                       className="rounded-full text-muted-foreground hover:text-foreground"
                     >
-                      <Youtube className="w-5 h-5" />
+                      <SiX className="w-4 h-4" />
                     </Button>
                   </a>
                 </TooltipTrigger>
-                <TooltipContent>YouTube</TooltipContent>
+                <TooltipContent>X/Twitter</TooltipContent>
               </Tooltip>
             </div>
 
