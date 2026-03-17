@@ -1,6 +1,7 @@
 "use client"
 
 import { Hero } from "@/components/Hero"
+import { ProfessionalSummary } from "@/components/ProfessionalSummary"
 import { Experience } from "@/components/Experience"
 import { TechStack } from "@/components/TechStack"
 import { Footer } from "@/components/Footer"
@@ -33,6 +34,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-background text-foreground antialiased selection:bg-primary selection:text-primary-foreground">
       <Hero />
+      <ProfessionalSummary />
       <Experience />
       <OpenSource />
       <GithubContributions />

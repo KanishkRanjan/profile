@@ -24,6 +24,18 @@ export function ATSView() {
         <div key={index}>{`- ${highlight.replace(/\*\*/g, "")}`}</div>
       ))}
       <br />
+      
+      {/* Professional Summary */}
+      <div>{`## Professional Summary`}</div>
+      <br />
+      {DATA.about.summary.map((item, index) => (
+        <div key={index}>
+          <div>{`### ${item.title}`}</div>
+          <div>{item.description}</div>
+          <br />
+        </div>
+      ))}
+
 
       {/* Experience */}
       <div>{`## Experience`}</div>
