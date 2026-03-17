@@ -11,7 +11,7 @@ export function ProfessionalSummary() {
       </h2>
 
       <div className="text-muted-foreground mb-4 leading-relaxed text-base">
-        <ul className="space-y-4 list-disc pl-4">
+        <ul className="space-y-4 list-none pl-0">
           {DATA.about.summary.map((item, index) => (
             <motion.li
               key={index}
@@ -23,12 +23,21 @@ export function ProfessionalSummary() {
                 duration: 0.5,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="pl-2 leading-relaxed transition-colors hover:text-foreground/90 duration-300"
+              className="relative pl-6 leading-relaxed transition-colors hover:text-foreground/90 duration-300"
             >
+              <span className="absolute left-0 text-muted-foreground/60">-</span>
               <strong className="text-foreground font-semibold">
                 {item.title}:
               </strong>{" "}
-              {item.description}
+              {item.description.split(/\*\*(.*?)\*\*/g).map((part, i) =>
+                i % 2 === 1 ? (
+                  <strong key={i} className="text-foreground font-semibold">
+                    {part}
+                  </strong>
+                ) : (
+                  part
+                ),
+              )}
             </motion.li>
           ))}
         </ul>

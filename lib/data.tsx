@@ -73,18 +73,18 @@ export const DATA = {
     ],
     summary: [
       {
-        title: "High-Velocity Systems Navigator",
-        description: "Thrives on being thrown into the deep end of massive codebases. Proven ability to master systems like Chromium and Electron.js in record time and ship critical patches that impact millions of users.",
+        title: "Systems Development",
+        description: "Experience navigating and contributing to large-scale codebases like **Chromium** and **Electron.js** to ship technical patches.",
         icon: Terminal
       },
       {
-        title: 'The "Consider It Done" Factor',
-        description: "Approaches every task with a finisher's mindset. Whether it’s architecting secure data storage or building complex features, once a task is assigned, it is treated as a commitment to high-quality delivery.",
+        title: "Execution Focus",
+        description: "Driven by a 'finisher's mindset' and a refusal to accept workarounds; committed to debugging deep into the source code to resolve the root cause of issues.",
         icon: Check
       },
       {
-        title: "Complex Problem Enthusiast",
-        description: "Genuinely enjoys the friction of difficult, shifting problems. Expert at identifying and resolving race conditions and performance bottlenecks in browser internals and high-concurrency backends like Eatka.",
+        title: "Technical Agility",
+        description: "Proven ability to pick up and apply new programming languages and frameworks on the fly to resolve complex bugs.",
         icon: Layers
       }
     ],
