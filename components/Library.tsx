@@ -10,7 +10,7 @@ const casualBooks = DATA.library.casual;
 
 export function Library() {
   return (
-    <section className="py-24 px-6 max-w-2xl mx-auto">
+    <section className="py-16 px-6 max-w-2xl mx-auto">
       <div className="space-y-12">
         {/* Section Header */}
         <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">

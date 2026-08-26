@@ -3,13 +3,14 @@
 import { motion } from "framer-motion";
 
 import { DATA } from "@/lib/data";
+import { renderRichText } from "@/lib/format";
 
 const projects = DATA.openSource;
 
 export function OpenSource() {
   return (
-    <section className="py-24 max-w-2xl mx-auto px-6">
-      <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-12">
+    <section className="py-16 max-w-2xl mx-auto px-6">
+      <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-8">
         Open Source Contributions
       </h2>
 
@@ -75,18 +76,7 @@ export function OpenSource() {
                         key={i}
                         className="text-muted-foreground text-sm leading-relaxed relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-muted-foreground/50"
                       >
-                        {point.split(/\*\*(.*?)\*\*/g).map((part, index) =>
-                          index % 2 === 1 ? (
-                            <strong
-                              key={index}
-                              className="text-foreground font-semibold"
-                            >
-                              {part}
-                            </strong>
-                          ) : (
-                            part
-                          ),
-                        )}
+                        {renderRichText(point)}
                       </li>
                     ))}
                   </ul>

@@ -4,7 +4,7 @@ import { DATA } from "@/lib/data";
 
 export function AboutMe() {
   return (
-    <section className="py-24 px-6 max-w-2xl mx-auto">
+    <section className="py-16 px-6 max-w-2xl mx-auto">
       <div className="space-y-12">
         {/* Header */}
         <div>

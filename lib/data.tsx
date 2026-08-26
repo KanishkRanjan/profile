@@ -307,7 +307,7 @@ export const DATA = {
           status: "merged" as const,
           description: [
             "**[emulation] Fix viewport leakage when taking full page screenshots**: Fixed full-page screenshots breaking the DevTools frontend whenever the page was larger than the browser window — the UI bled into other panels and stayed broken until a resize or tab switch.",
-            "Traced the root cause to `emulateDevice()` running *after* the capture, overriding the viewport with stale dimensions and never restoring it, leaving DevTools stuck with no cleanup path.",
+            "Traced the root cause to `emulateDevice()` running after the capture rather than before it, overriding the viewport with stale dimensions and never restoring it, leaving DevTools stuck with no cleanup path.",
             "Moved emulation ahead of the capture with correct device metrics and wrapped it in `try/finally` calling `emulateDevice(null)`, guaranteeing viewport restoration and removing a five-year-old block that had become a silent landmine.",
           ],
           link: "https://chromium-review.googlesource.com/q/7693757",

@@ -5,8 +5,8 @@ import { motion } from "framer-motion"
 
 export function Stats() {
     return (
-        <section className="py-24 px-6 w-full max-w-4xl mx-auto">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-12 text-center">
+        <section className="py-16 px-6 w-full max-w-4xl mx-auto">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-8 text-center">
                 Achievements
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">

@@ -19,7 +19,7 @@ export function TechStack() {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <section className="py-24 max-w-2xl mx-auto space-y-12">
+    <section className="py-16 max-w-2xl mx-auto space-y-12">
       <h3 className="text-center text-muted-foreground text-sm uppercase tracking-widest mb-4">
         Technologies I Work With
       </h3>

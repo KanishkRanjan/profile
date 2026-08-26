@@ -3,13 +3,14 @@
 import { motion } from "framer-motion";
 
 import { DATA } from "@/lib/data";
+import { renderRichText } from "@/lib/format";
 
 const experiences = DATA.experience;
 
 export function Experience() {
   return (
-    <section className="px-6 py-24 max-w-2xl mx-auto">
-      <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-12">
+    <section className="px-6 py-16 max-w-2xl mx-auto">
+      <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-8">
         Experience & Story
       </h2>
 
@@ -81,15 +82,7 @@ export function Experience() {
                         key={i}
                         className="pl-1 leading-relaxed transition-colors group-hover:text-foreground/90 duration-300"
                       >
-                        {point.split(/\*\*(.*?)\*\*/g).map((part, index) =>
-                          index % 2 === 1 ? (
-                            <strong key={index} className="text-foreground">
-                              {part}
-                            </strong>
-                          ) : (
-                            part
-                          ),
-                        )}
+                        {renderRichText(point)}
                       </li>
                     ))}
                   </ul>

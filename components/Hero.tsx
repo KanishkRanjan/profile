@@ -6,6 +6,7 @@ import { LofiPlayer } from "@/components/LofiPlayer";
 import Image from "next/image";
 
 import { DATA } from "@/lib/data";
+import { renderRichText } from "@/lib/format";
 
 export function Hero() {
   return (
@@ -77,15 +78,7 @@ export function Hero() {
               }}
               className="text-muted-foreground leading-relaxed transition-colors hover:text-foreground/90"
             >
-              {point.split(/\*\*(.*?)\*\*/g).map((part, index) =>
-                index % 2 === 1 ? (
-                  <strong key={index} className="text-foreground font-semibold">
-                    {part}
-                  </strong>
-                ) : (
-                  part
-                ),
-              )}
+              {renderRichText(point)}
             </motion.div>
           ))}
         </div>

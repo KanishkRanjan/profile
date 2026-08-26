@@ -13,8 +13,8 @@ export function GithubContributions() {
     const { theme } = useTheme()
 
     return (
-        <section className="px-6 py-24 max-w-4xl mx-auto flex flex-col items-center">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-12 text-center">
+        <section className="px-6 py-16 max-w-4xl mx-auto flex flex-col items-center">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-8 text-center">
                 GitHub Contributions
             </h2>
 

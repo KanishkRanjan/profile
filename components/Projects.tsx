@@ -9,8 +9,8 @@ const projects = DATA.projects;
 
 export function Projects() {
   return (
-    <section className="py-24 max-w-2xl mx-auto px-6">
-      <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-12">
+    <section className="py-16 max-w-2xl mx-auto px-6">
+      <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-8">
         Selected Projects
       </h2>
 

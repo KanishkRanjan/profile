@@ -2,11 +2,12 @@
 
 import { motion } from "framer-motion";
 import { DATA } from "@/lib/data";
+import { renderRichText } from "@/lib/format";
 
 export function ProfessionalSummary() {
   return (
-    <section className="px-6 pb-24 pt-8 max-w-2xl mx-auto">
-      <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-12">
+    <section className="px-6 pb-16 pt-8 max-w-2xl mx-auto">
+      <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-8">
         Professional Summary
       </h2>
 
@@ -29,15 +30,7 @@ export function ProfessionalSummary() {
               <strong className="text-foreground font-semibold">
                 {item.title}:
               </strong>{" "}
-              {item.description.split(/\*\*(.*?)\*\*/g).map((part, i) =>
-                i % 2 === 1 ? (
-                  <strong key={i} className="text-foreground font-semibold">
-                    {part}
-                  </strong>
-                ) : (
-                  part
-                ),
-              )}
+              {renderRichText(item.description)}
             </motion.li>
           ))}
         </ul>
