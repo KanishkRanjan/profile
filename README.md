@@ -1,5 +1,11 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Automatic contribution updates
+
+The profile uses a committed snapshot of merged contributions from selected GitHub, KDE Invent, and Chromium Gerrit projects. Edit [`config/contributions.json`](config/contributions.json) through a PR to add projects, filter changes, exclude reverted work, or customize summaries. A daily GitHub Action opens one review PR when the data changes.
+
+See [configuration and sync instructions](config/README.md) for source examples, summary extraction, scheduling, and permissions. Run `npm run sync:contributions` to refresh locally and `npm run test:contributions` to check the sync.
+
 ## Getting Started
 
 First, run the development server:

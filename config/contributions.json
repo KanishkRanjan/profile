@@ -1,0 +1,165 @@
+{
+  "version": 1,
+  "groups": [
+    {
+      "id": "electron",
+      "name": "Electron.js",
+      "role": "Contributor",
+      "summary": "Native macOS behavior, display capture, protocol validation, developer tools, and regression testing.",
+      "sourceUrl": "https://github.com/electron/electron/pulls?q=is%3Apr+is%3Amerged+author%3AKanishkRanjan"
+    },
+    {
+      "id": "chromium",
+      "name": "The Chromium Project",
+      "role": "Open Source Developer"
+    },
+    {
+      "id": "kde",
+      "name": "KDE Plasma",
+      "role": "Contributor"
+    }
+  ],
+  "sources": [
+    {
+      "id": "electron",
+      "provider": "github",
+      "group": "electron",
+      "project": "electron/electron",
+      "author": "KanishkRanjan",
+      "labelPrefix": "PR #",
+      "exclude": [],
+      "overrides": {
+        "55057": {
+          "description": [
+            "**Preserve native macOS menu titles and icons**: Updated native menu state handling to preserve AppKit-managed titles and default icons on macOS Tahoe, including Settings and submenu icons, while still applying explicit changes from JavaScript."
+          ]
+        },
+        "52519": {
+          "description": [
+            "**Validate custom protocol scheme names**: Added RFC 3986 scheme-name validation to protocol.registerSchemesAsPrivileged() before custom schemes are registered or forwarded to child processes."
+          ]
+        },
+        "52455": {
+          "description": [
+            "**Support the restrictOwnAudio constraint**: Fixed display-media audio capture to honor restrictOwnAudio and suppressLocalAudioPlayback by selecting loopbackWithoutChrome on supported platforms, excluding local app playback."
+          ]
+        },
+        "51155": {
+          "description": [
+            "**Restore macOS Tahoe menu role icons**: Refreshed native menu actions to restore system-provided role icons after menus were reopened. Followed up in #55057 to also preserve submenu icons and AppKit-managed titles."
+          ]
+        },
+        "49356": {
+          "description": [
+            "**Fix Toggle Developer Tools for BaseWindow**: Fixed a main-process JavaScript error by targeting the focused WebContents when toggling DevTools, allowing the menu role to work with BaseWindow."
+          ]
+        },
+        "50261": {
+          "description": [
+            "**Add desktopCapturer icon regression tests**: Added tests that verify captured window icons are present and valid, guarding against regressions like the macOS Tahoe icon retrieval failure in #48063."
+          ]
+        },
+        "50188": {
+          "description": [
+            "**Backport the macOS Tahoe app icon fix**: Backported Chromium CL 7239386 into Electron to restore running application icon retrieval on macOS Tahoe, resolving #48063."
+          ]
+        },
+        "49364": {
+          "description": [
+            "**Stabilize BrowserWindow tests across desktop themes**: Fixed test failures caused by Chromium applying a dark background to about:blank when the desktop uses Dark mode."
+          ]
+        },
+        "49316": {
+          "description": [
+            "**Stabilize BrowserView tests across desktop themes**: Addressed theme-dependent background rendering in BrowserView tests so that Dark mode does not cause false failures."
+          ]
+        }
+      }
+    },
+    {
+      "id": "chromium",
+      "provider": "gerrit",
+      "baseUrl": "https://chromium-review.googlesource.com",
+      "group": "chromium",
+      "project": "chromium/src",
+      "author": "kanishkranjan17@gmail.com",
+      "labelPrefix": "CL ",
+      "exclude": [
+        7206079
+      ],
+      "overrides": {
+        "7239386": {
+          "description": [
+            "**Fix WebRTC window icon conversion on macOS**: Replaced incorrect manual NSImage-to-ImageSkia conversion with gfx::Image to prevent blank or corrupted icons in the WebRTC window picker.",
+            "Backported this upstream fix into Electron through PR #50188 to resolve desktopCapturer issue #48063."
+          ]
+        },
+        "7276941": {
+          "description": [
+            "**Preserve the caret when right-clicking on macOS**: Updated Blink’s SelectionController to skip word selection when a right-click matches the existing caret position, preserving native macOS context-menu behavior.",
+            "Prevented context-menu paste from unexpectedly replacing a whole word and added a regression test for right-clicking an existing caret."
+          ]
+        }
+      }
+    },
+    {
+      "id": "devtools",
+      "provider": "gerrit",
+      "baseUrl": "https://chromium-review.googlesource.com",
+      "group": "chromium",
+      "project": "devtools/devtools-frontend",
+      "author": "kanishkranjan17@gmail.com",
+      "labelPrefix": "CL ",
+      "exclude": [],
+      "overrides": {
+        "7693757": {
+          "description": [
+            "**Fix DevTools viewport leakage during full-page screenshots**: Fixed a screenshot flow that left DevTools with stale viewport dimensions, causing its UI to overlap other components after capturing pages larger than the browser window.",
+            "Applied device emulation before capture and restored the viewport in a try/finally block, ensuring cleanup even if screenshot capture fails."
+          ]
+        }
+      }
+    },
+    {
+      "id": "kglobalacceld",
+      "provider": "gitlab",
+      "baseUrl": "https://invent.kde.org",
+      "group": "kde",
+      "project": "plasma/kglobalacceld",
+      "author": "kanishkranjan",
+      "labelPrefix": "KGlobalAccelD MR !",
+      "exclude": [],
+      "overrides": {
+        "134": {
+          "description": [
+            "**Fix Unicode handling in D-Bus object paths**: Fixed character truncation in KGlobalAccelD that allowed non-ASCII characters to pass ASCII validation and produce invalid component paths. Preserved the full Unicode value using char16_t.",
+            "Extracted path sanitization into a testable helper and added regression coverage for ASCII, accented Latin, Polish, and CJK component names."
+          ]
+        }
+      }
+    },
+    {
+      "id": "plasma-browser-integration",
+      "provider": "gitlab",
+      "baseUrl": "https://invent.kde.org",
+      "group": "kde",
+      "project": "plasma/plasma-browser-integration",
+      "author": "kanishkranjan",
+      "labelPrefix": "Plasma Browser Integration MR !",
+      "exclude": [],
+      "overrides": {
+        "210": {
+          "description": [
+            "**Fix Microsoft Teams screen sharing with media controls enabled**: Replaced temporary DOM insertion of detached media players with event-based discovery, preventing the browser extension from disrupting Teams screen sharing.",
+            "Passed detached audio and video elements to the content script through an event’s relatedTarget, preserving media-player detection without inserting or removing those elements from the page."
+          ]
+        },
+        "211": {
+          "description": [
+            "**Clarify native-host message callbacks**: Renamed addCallback to addPortCallback and callbacks to portCallbacks throughout the extension, distinguishing native-host port messages from runtime callbacks and resolving existing TODOs."
+          ]
+        }
+      }
+    }
+  ]
+}

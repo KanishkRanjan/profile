@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Temporary contribution-sync report and atomic writes
+/.contribution-sync/
+/data/*.tmp

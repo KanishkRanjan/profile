@@ -1,0 +1,104 @@
+name: Sync contributions
+
+on:
+  schedule:
+    - cron: "17 3 * * *" # Daily at 08:47 Asia/Kolkata (GitHub schedules can be delayed).
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - config/contributions.json
+      - scripts/contribution-sync.mjs
+      - .github/workflows/sync-contributions.yml
+
+permissions: {}
+
+concurrency:
+  group: contribution-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.repository == 'KanishkRanjan/profile'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run test:contributions
+      - name: Fetch configured merged contributions
+        run: npm run sync:contributions
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Check for data changes
+        id: changes
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          BASE_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- data/contributions.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # Compare against a pending update too, so an unmerged bot PR is not
+          # rewritten every day merely because its verification date advanced.
+          branch="bot/sync-contributions"
+          pr="$(gh pr list --head "$branch" --base "$BASE_BRANCH" --state open --json number --jq '.[0].number // empty')"
+          if [ -n "$pr" ]; then
+            git fetch origin "refs/heads/$branch:refs/remotes/origin/$branch"
+            git show "origin/$branch:data/contributions.json" > .contribution-sync/pending.json
+            if node --input-type=module -e '
+              import { readFileSync } from "node:fs";
+              const next = JSON.parse(readFileSync("data/contributions.json", "utf8"));
+              const pending = JSON.parse(readFileSync(".contribution-sync/pending.json", "utf8"));
+              process.exit(JSON.stringify(next.groups) === JSON.stringify(pending.groups) ? 0 : 1);
+            '; then
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Validate the updated profile
+        if: steps.changes.outputs.changed == 'true'
+        run: npm run build
+      - name: Open or update the contribution PR
+        if: steps.changes.outputs.changed == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          BASE_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+          branch="bot/sync-contributions"
+          remote_sha="$(git ls-remote origin "refs/heads/$branch" | cut -f1)"
+          git switch -c "$branch"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- data/contributions.json
+          git diff --cached --check
+          git commit -m "chore: sync merged contributions"
+          git push --force-with-lease="refs/heads/$branch:$remote_sha" origin "HEAD:refs/heads/$branch"
+          pr="$(gh pr list --head "$branch" --base "$BASE_BRANCH" --state open --json number --jq '.[0].number // empty')"
+          if [ -n "$pr" ]; then
+            gh pr edit "$pr" --body-file .contribution-sync/pr-body.md
+          else
+            gh pr create --base "$BASE_BRANCH" --head "$branch" \
+              --title 'chore: update merged contributions' \
+              --body-file .contribution-sync/pr-body.md
+          fi
+      - name: Record unchanged sync
+        if: steps.changes.outputs.changed == 'false'
+        run: echo "All configured sources checked; no changes beyond main or the pending update PR." >> "$GITHUB_STEP_SUMMARY"

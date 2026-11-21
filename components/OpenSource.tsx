@@ -4,7 +4,11 @@ import { motion } from "framer-motion";
 
 import { DATA, ELECTRON_SUMMARY } from "@/lib/data";
 
-const projects = DATA.openSource;
+const projects = DATA.openSource.map((project) => ({
+  ...project,
+  summary: "summary" in project ? project.summary : "",
+  sourceUrl: "sourceUrl" in project ? project.sourceUrl : "",
+}));
 
 export function OpenSource() {
   return (
@@ -23,21 +27,26 @@ export function OpenSource() {
               <span className="text-muted-foreground font-medium">
                 {project.role}
               </span>
-              {project.name === "Electron.js" && (
+              {(project.name === "Electron.js" || project.summary || project.sourceUrl) && (
                 <div className="mt-5 space-y-3">
-                  <p className="text-base text-foreground">
-                    {ELECTRON_SUMMARY.merged} merged PRs
-                  </p>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Native macOS behavior, display capture, protocol validation,
-                    developer tools, and regression testing.
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    Verified {ELECTRON_SUMMARY.verifiedOn}.{" "}
-                    <a href={ELECTRON_SUMMARY.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-foreground">
-                      View merged Electron PRs
-                    </a>
-                  </p>
+                  {project.name === "Electron.js" && (
+                    <p className="text-base text-foreground">
+                      {ELECTRON_SUMMARY.merged} merged PRs
+                    </p>
+                  )}
+                  {project.summary && (
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {project.summary}
+                    </p>
+                  )}
+                  {project.sourceUrl && (
+                    <p className="text-sm text-muted-foreground">
+                      Verified {ELECTRON_SUMMARY.verifiedOn}.{" "}
+                      <a href={project.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-foreground">
+                        {project.name === "Electron.js" ? "View merged Electron PRs" : "View contributions"}
+                      </a>
+                    </p>
+                  )}
                 </div>
               )}
             </div>
