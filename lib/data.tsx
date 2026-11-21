@@ -194,9 +194,23 @@ export const DATA = {
   experience: [
     {
       type: "Internship",
+      role: "Engineering Fellowship Intern",
+      company: "Newton School",
+      period: "Jul. 2026 – Present (ends 31 Dec. 2026)",
+      location: "Pune, Maharashtra, India (On-site)",
+      description: [
+        "Developed an ER diagram validator that compares Entity–Relationship diagrams and assesses their correctness using graph comparison techniques.",
+        "Added a workstation to a compute cluster and connected it to a local Rancher-managed Kubernetes environment with stable IP addressing.",
+        "Built an AI-assisted mentorship and grading platform for scheduling meetings, assigning mentors to startups, and tracking biweekly evaluations.",
+        "Integrated automated meeting attendance and transcript-based KPI generation to help educators assess student performance.",
+      ],
+      tags: ["Graph Comparison", "Kubernetes", "Rancher", "AI-Assisted Evaluation"],
+    },
+    {
+      type: "Internship",
       role: "Software Development Intern",
       company: "Megahit",
-      period: "Jan. 2026 – Present",
+      period: "Jan. 2026 – May 2026",
       location: "Berlin, Germany (Remote)",
       subtitle: "Mentored by Niklas Wenzel (Electron.js Maintainer)",
       referenceLink:
