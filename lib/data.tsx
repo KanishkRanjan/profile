@@ -158,15 +158,15 @@ export const DATA = {
   },
   about: {
     intro:
-      "I am a Computer Science student at Newton School of Technology, Pune, and an open-source contributor to Electron and Chromium. My merged Electron work spans native macOS menus, desktop capture, custom protocol validation, and developer tools. I also build full-stack applications and cross-platform desktop software.",
+      "I am a Computer Science student at Newton School of Technology, Pune, and an open-source contributor to Electron, Chromium, and KDE Plasma. My merged work spans native desktop behavior, browser integration, screen sharing, and developer tools. I also build full-stack applications and cross-platform desktop software.",
     highlights: [
-      "**Open Source Contributor · Electron & Chromium**",
+      "**Open Source Contributor · Electron, Chromium & KDE Plasma**",
       `${ELECTRON_SUMMARY.merged} merged Electron PRs spanning native macOS behavior, screen capture, protocol validation, and developer tools.`,
     ],
     summary: [
       {
         title: "Systems Development",
-        description: "Contributed merged fixes to **Electron** across native macOS menus, desktop capture, custom protocol validation, and BaseWindow developer tools.",
+        description: "Contributed merged fixes to **Electron**, **Chromium**, and **KDE Plasma** across native desktop behavior, browser integration, screen sharing, and developer tools.",
         icon: Terminal
       },
       {
@@ -176,7 +176,7 @@ export const DATA = {
       },
       {
         title: "Technical Agility",
-        description: "Work across **C++**, native macOS code, and **TypeScript** to investigate platform behavior and carry fixes through upstream review.",
+        description: "Work across **C++/Qt**, native macOS code, **JavaScript**, and **TypeScript** to investigate platform behavior and carry fixes through upstream review.",
         icon: Layers
       }
     ],
@@ -272,6 +272,41 @@ export const DATA = {
             "Prevented context-menu paste from unexpectedly replacing a whole word and added a regression test for right-clicking an existing caret.",
           ],
           link: "https://chromium-review.googlesource.com/c/chromium/src/+/7276941",
+        },
+      ],
+    },
+    {
+      name: "KDE Plasma",
+      role: "Contributor",
+      contributions: [
+        {
+          id: "KGlobalAccelD MR !134",
+          icon: GitPullRequest,
+          status: "merged" as const,
+          description: [
+            "**Fix Unicode handling in D-Bus object paths**: Fixed character truncation in KGlobalAccelD that allowed non-ASCII characters to pass ASCII validation and produce invalid component paths. Preserved the full Unicode value using char16_t.",
+            "Extracted path sanitization into a testable helper and added regression coverage for ASCII, accented Latin, Polish, and CJK component names.",
+          ],
+          link: "https://invent.kde.org/plasma/kglobalacceld/-/merge_requests/134",
+        },
+        {
+          id: "Plasma Browser Integration MR !210",
+          icon: GitPullRequest,
+          status: "merged" as const,
+          description: [
+            "**Fix Microsoft Teams screen sharing with media controls enabled**: Replaced temporary DOM insertion of detached media players with event-based discovery, preventing the browser extension from disrupting Teams screen sharing.",
+            "Passed detached audio and video elements to the content script through an event’s relatedTarget, preserving media-player detection without inserting or removing those elements from the page.",
+          ],
+          link: "https://invent.kde.org/plasma/plasma-browser-integration/-/merge_requests/210",
+        },
+        {
+          id: "Plasma Browser Integration MR !211",
+          icon: GitPullRequest,
+          status: "merged" as const,
+          description: [
+            "**Clarify native-host message callbacks**: Renamed addCallback to addPortCallback and callbacks to portCallbacks throughout the extension, distinguishing native-host port messages from runtime callbacks and resolving existing TODOs.",
+          ],
+          link: "https://invent.kde.org/plasma/plasma-browser-integration/-/merge_requests/211",
         },
       ],
     },
