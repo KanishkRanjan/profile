@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: "17 3 * * *" # Daily eligibility check; upstream/model calls only on the 14-day cadence.
   workflow_dispatch:
+    inputs:
+      smoke_test:
+        description: Test Gemini on a synthetic diff without changing profile data
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths:
@@ -32,18 +37,19 @@ jobs:
         id: cadence
         env:
           EVENT_NAME: ${{ github.event_name }}
+          SMOKE_TEST: ${{ inputs.smoke_test }}
         run: |
           node --input-type=module -e '
             import { appendFileSync } from "node:fs";
             const day = Math.floor(Date.now() / 86400000);
             const anchor = Math.floor(Date.parse("2026-11-21T00:00:00Z") / 86400000);
-            const due = process.env.EVENT_NAME !== "schedule" || (day - anchor) % 14 === 0;
+            const due = process.env.SMOKE_TEST !== "true" && (process.env.EVENT_NAME !== "schedule" || (day - anchor) % 14 === 0);
             appendFileSync(process.env.GITHUB_OUTPUT, `due=${due}\n`);
           '
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-        if: steps.cadence.outputs.due == 'true'
+        if: steps.cadence.outputs.due == 'true' || inputs.smoke_test
         with:
-          ref: ${{ github.event.repository.default_branch }}
+          ref: ${{ inputs.smoke_test && github.ref || github.event.repository.default_branch }}
       - if: steps.cadence.outputs.due == 'true'
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
@@ -53,6 +59,17 @@ jobs:
         run: npm ci
       - if: steps.cadence.outputs.due == 'true'
         run: npm run test:contributions
+      - name: Test Gemini without changing profile data
+        if: inputs.smoke_test
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          node --input-type=module -e '
+            import { generateSummary } from "./scripts/gemini-summary.mjs";
+            const docs = [{id:"description",text:"Reject blank labels before storage.",url:"https://example.com/synthetic-fixture"}, {id:"diff-0",text:"labels.js\n@@ -1 +1,2 @@\n+if (!label.trim()) throw new Error(\"Empty label\");\n store(label);",url:"https://example.com/synthetic-fixture"}];
+            const result = await generateSummary(docs);
+            console.log(`Gemini authentication, generation, evidence validation and verification passed (${result.ai.model}). Profile data was not modified.`);
+          '
       - name: Load pending summary cache
         if: steps.cadence.outputs.due == 'true'
         env:
