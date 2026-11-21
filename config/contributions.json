@@ -161,5 +161,9 @@
         }
       }
     }
-  ]
+  ],
+  "ai": {
+    "enabled": true,
+    "maxNewEntries": 5
+  }
 }
