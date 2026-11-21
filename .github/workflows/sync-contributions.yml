@@ -2,13 +2,15 @@ name: Sync contributions
 
 on:
   schedule:
-    - cron: "17 3 * * *" # Daily at 08:47 Asia/Kolkata (GitHub schedules can be delayed).
+    - cron: "17 3 * * *" # Daily eligibility check; upstream/model calls only on the 14-day cadence.
   workflow_dispatch:
   push:
     branches: [main]
     paths:
       - config/contributions.json
       - scripts/contribution-sync.mjs
+      - scripts/gemini-summary.mjs
+      - prompts/**
       - .github/workflows/sync-contributions.yml
 
 permissions: {}
@@ -21,25 +23,56 @@ jobs:
   sync:
     if: github.repository == 'KanishkRanjan/profile'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     permissions:
       contents: write
       pull-requests: write
     steps:
+      - name: Check fortnightly cadence
+        id: cadence
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          node --input-type=module -e '
+            import { appendFileSync } from "node:fs";
+            const day = Math.floor(Date.now() / 86400000);
+            const anchor = Math.floor(Date.parse("2026-11-21T00:00:00Z") / 86400000);
+            const due = process.env.EVENT_NAME !== "schedule" || (day - anchor) % 14 === 0;
+            appendFileSync(process.env.GITHUB_OUTPUT, `due=${due}\n`);
+          '
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        if: steps.cadence.outputs.due == 'true'
         with:
           ref: ${{ github.event.repository.default_branch }}
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+      - if: steps.cadence.outputs.due == 'true'
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: "22"
           cache: npm
-      - run: npm ci
-      - run: npm run test:contributions
+      - if: steps.cadence.outputs.due == 'true'
+        run: npm ci
+      - if: steps.cadence.outputs.due == 'true'
+        run: npm run test:contributions
+      - name: Load pending summary cache
+        if: steps.cadence.outputs.due == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          mkdir -p .contribution-sync
+          if [ -n "$(gh pr list --head bot/sync-contributions --state open --json number --jq '.[0].number // empty')" ]; then
+            git fetch origin refs/heads/bot/sync-contributions:refs/remotes/origin/bot/sync-contributions
+            git show origin/bot/sync-contributions:data/contributions.json > .contribution-sync/pending.json
+          fi
       - name: Fetch configured merged contributions
+        if: steps.cadence.outputs.due == 'true'
         run: npm run sync:contributions
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       - name: Check for data changes
+        if: steps.cadence.outputs.due == 'true'
         id: changes
         shell: bash
         env:

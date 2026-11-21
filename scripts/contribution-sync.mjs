@@ -1,3 +1,4 @@
+import { gatherEvidence, generateSummary } from "./gemini-summary.mjs";
 import { readFile, writeFile, mkdir, rename } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -20,7 +21,11 @@ function secureOrigin(value) {
 }
 
 export function validateConfig(config) {
-  knownKeys(config, ["version", "groups", "sources"], "config");
+  knownKeys(config, ["version", "groups", "sources", "ai"], "config");
+  if (config.ai !== undefined) {
+    knownKeys(config.ai, ["enabled", "maxNewEntries"], "ai");
+    assert(typeof config.ai.enabled === "boolean" && Number.isInteger(config.ai.maxNewEntries) && config.ai.maxNewEntries > 0 && config.ai.maxNewEntries <= 5, "AI budget must be between 1 and 5 new entries");
+  }
   assert(config.version === 1, "Unsupported config version");
   assert(Array.isArray(config.groups) && config.groups.length > 0, "Configure at least one group");
   assert(Array.isArray(config.sources) && config.sources.length > 0, "Configure at least one source");
@@ -208,6 +213,8 @@ export async function collectContributions(config, previous, options = {}) {
   validateConfig(config);
   // Fetch every source before any write. One failed API keeps the entire snapshot intact.
   const byGroup = new Map(config.groups.map((group) => [group.id, []]));
+  let attempted = 0;
+  const frozen = new Map((previous?.groups ?? []).flatMap(g => g.contributions.map(item => [`${item.sourceId}:${item.number}`, item])));
   for (const source of config.sources) {
     options.log?.(`Checking ${source.id} (${source.provider}: ${source.project})…`);
     const changes = await fetchSource(source, options);
@@ -217,24 +224,57 @@ export async function collectContributions(config, previous, options = {}) {
       assert(Number.isSafeInteger(change.number) && nonempty(change.title) && !Number.isNaN(Date.parse(change.mergedAt)), `${source.id}: invalid contribution data`);
       change.mergedAt = new Date(change.mergedAt).toISOString();
     }
-    byGroup.get(source.group).push(...selectChanges(changes, source));
+    const selected = selectChanges(changes, source);
+    if (!config.ai?.enabled) byGroup.get(source.group).push(...selected.filter(item => !frozen.has(`${source.id}:${item.number}`)));
+    else {
+      for (const item of selected) {
+        // Existing entries are immutable, including dates, titles and descriptions.
+        if (frozen.has(`${source.id}:${item.number}`)) continue;
+        if (source.overrides?.[item.number]?.description) { byGroup.get(source.group).push(item); continue; }
+        if (attempted >= config.ai.maxNewEntries) { options.log?.(`Held ${source.id}:${item.number}: cycle budget reached`); continue; }
+        attempted++;
+        try {
+          const raw = changes.find(c => c.number === item.number);
+          const docs = await (options.gatherEvidence ?? gatherEvidence)(source, raw, async url => (await request(url, options.fetcher ?? fetch, options.token ?? process.env.GITHUB_TOKEN)).data);
+          const cached = options.cache?.groups?.flatMap(g => g.contributions).find(c => c.sourceId === source.id && c.number === item.number);
+          const result = await (options.generateSummary ?? generateSummary)(docs, { key: options.geminiKey ?? process.env.GEMINI_API_KEY, fetcher: options.geminiFetcher ?? fetch, cached });
+          byGroup.get(source.group).push({ ...item, description: result.description, ai: result.ai });
+        } catch (error) {
+          const message = `Held ${source.id}:${item.number}: ${error.message}`;
+          options.log?.(message);
+          options.held?.push(message);
+        }
+      }
+    }
   }
-  const groups = config.groups.map((group) => ({
+  {
+    // Keep entire existing groups and entries even if upstream metadata or config filters change.
+    for (const group of previous?.groups ?? []) {
+      if (!byGroup.has(group.id)) byGroup.set(group.id, []);
+      byGroup.get(group.id).push(...group.contributions);
+    }
+  }
+  const groupDefinitions = [...(previous?.groups ?? []).map(({ contributions, ...group }) => group), ...config.groups.filter(g => !previous?.groups?.some(old => old.id === g.id))];
+  const groups = groupDefinitions.map((group) => ({
     ...group, summary: group.summary ?? "", sourceUrl: group.sourceUrl ?? "",
     contributions: byGroup.get(group.id).sort((a, b) => b.mergedAt.localeCompare(a.mergedAt) || a.sourceId.localeCompare(b.sourceId) || b.number - a.number),
   }));
   if (previous && JSON.stringify(previous.groups) === JSON.stringify(groups)) return previous;
-  return { version: 1, verifiedOn: (options.now ?? new Date()).toISOString().slice(0, 10), groups };
+  return { version: 1, verifiedOn: previous?.verifiedOn ?? (options.now ?? new Date()).toISOString().slice(0, 10), groups };
 }
 
 export function changeReport(previous, next) {
   const entries = (snapshot) => new Map((snapshot?.groups ?? []).flatMap((group) => group.contributions.map((item) => [`${item.sourceId}:${item.number}`, item])));
   const before = entries(previous), after = entries(next);
-  const lines = ["Refresh merged contributions from the configured GitHub, GitLab, and Gerrit projects.", "", "Source statuses were checked during this run. New text uses curated overrides, release notes, or a cleaned description excerpt; no AI-generated claims.", ""];
+  const lines = ["Refresh merged contributions from the configured GitHub, GitLab, and Gerrit projects.", "", "Source statuses were checked during this run. Existing entries are frozen. New AI summaries require exact evidence quotations and a separate verification pass; human review is still required.", ""];
   for (const [key, item] of after) {
     const old = before.get(key);
     if (!old || JSON.stringify(old) !== JSON.stringify(item)) {
       lines.push(`- ${old ? "Updated" : "Added"}: [${item.id}](${item.link}) — ${item.title}`, ...item.description.map((text) => `  - ${text}`));
+      for (const claim of item.ai?.claims ?? []) for (const support of claim.support) {
+        const url = item.ai.sources.find(s => s.id === support.source)?.url ?? item.link;
+        lines.push(`  - Evidence [${support.source}](${url}): ${support.quote.replace(/\s+/g, " ")}`);
+      }
     }
   }
   for (const [key, item] of before) if (!after.has(key)) lines.push(`- Removed: [${item.id}](${item.link}) (excluded, filtered, source removed, or no longer returned as merged).`);
@@ -247,10 +287,14 @@ async function main() {
   const output = "data/contributions.json";
   let previous;
   try { previous = JSON.parse(await readFile(output, "utf8")); } catch (error) { if (error.code !== "ENOENT") throw error; }
-  const next = await collectContributions(config, previous, { log: console.log });
+  let cache;
+  try { cache = JSON.parse(await readFile(".contribution-sync/pending.json", "utf8")); } catch (error) { if (error.code !== "ENOENT") throw error; }
+  const held = [];
+  const next = await collectContributions(config, previous, { log: console.log, cache, held });
   const changed = JSON.stringify(previous) !== JSON.stringify(next);
   await mkdir(".contribution-sync", { recursive: true });
-  await writeFile(".contribution-sync/pr-body.md", changeReport(previous, next));
+  await writeFile(".contribution-sync/pr-body.md", changeReport(previous, next) + (held.length ? "\nHeld for manual review (not published):\n" + held.map(s => `- ${s}`).join("\n") : ""));
+  if (process.env.GITHUB_STEP_SUMMARY && held.length) await writeFile(process.env.GITHUB_STEP_SUMMARY, held.join("\n"), { flag: "a" });
   if (changed) {
     await mkdir(dirname(output), { recursive: true });
     await writeFile(`${output}.tmp`, JSON.stringify(next, null, 2) + "\n");
