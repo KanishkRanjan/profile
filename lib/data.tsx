@@ -58,6 +58,97 @@ const ShadcnIcon =
     </svg>
   ));
 
+// Merged contributions verified against GitHub on 21 November 2026.
+export const ELECTRON_CONTRIBUTIONS = [
+  {
+    id: "PR #55057",
+    icon: GitPullRequest,
+    status: "merged" as const,
+    description: [
+      "**Preserve native macOS menu titles and icons**: Updated native menu state handling to preserve AppKit-managed titles and default icons on macOS Tahoe, including Settings and submenu icons, while still applying explicit changes from JavaScript."
+    ],
+    link: "https://github.com/electron/electron/pull/55057",
+  },
+  {
+    id: "PR #52519",
+    icon: GitPullRequest,
+    status: "merged" as const,
+    description: [
+      "**Validate custom protocol scheme names**: Added RFC 3986 scheme-name validation to protocol.registerSchemesAsPrivileged() before custom schemes are registered or forwarded to child processes."
+    ],
+    link: "https://github.com/electron/electron/pull/52519",
+  },
+  {
+    id: "PR #52455",
+    icon: GitPullRequest,
+    status: "merged" as const,
+    description: [
+      "**Support the restrictOwnAudio constraint**: Fixed display-media audio capture to honor restrictOwnAudio and suppressLocalAudioPlayback by selecting loopbackWithoutChrome on supported platforms, excluding local app playback."
+    ],
+    link: "https://github.com/electron/electron/pull/52455",
+  },
+  {
+    id: "PR #51155",
+    icon: GitPullRequest,
+    status: "merged" as const,
+    description: [
+      "**Restore macOS Tahoe menu role icons**: Refreshed native menu actions to restore system-provided role icons after menus were reopened. Followed up in #55057 to also preserve submenu icons and AppKit-managed titles."
+    ],
+    link: "https://github.com/electron/electron/pull/51155",
+  },
+  {
+    id: "PR #49356",
+    icon: GitPullRequest,
+    status: "merged" as const,
+    description: [
+      "**Fix Toggle Developer Tools for BaseWindow**: Fixed a main-process JavaScript error by targeting the focused WebContents when toggling DevTools, allowing the menu role to work with BaseWindow."
+    ],
+    link: "https://github.com/electron/electron/pull/49356",
+  },
+  {
+    id: "PR #50261",
+    icon: GitPullRequest,
+    status: "merged" as const,
+    description: [
+      "**Add desktopCapturer icon regression tests**: Added tests that verify captured window icons are present and valid, guarding against regressions like the macOS Tahoe icon retrieval failure in #48063."
+    ],
+    link: "https://github.com/electron/electron/pull/50261",
+  },
+  {
+    id: "PR #50188",
+    icon: GitPullRequest,
+    status: "merged" as const,
+    description: [
+      "**Backport the macOS Tahoe app icon fix**: Backported Chromium CL 7239386 into Electron to restore running application icon retrieval on macOS Tahoe, resolving #48063."
+    ],
+    link: "https://github.com/electron/electron/pull/50188",
+  },
+  {
+    id: "PR #49364",
+    icon: GitPullRequest,
+    status: "merged" as const,
+    description: [
+      "**Stabilize BrowserWindow tests across desktop themes**: Fixed test failures caused by Chromium applying a dark background to about:blank when the desktop uses Dark mode."
+    ],
+    link: "https://github.com/electron/electron/pull/49364",
+  },
+  {
+    id: "PR #49316",
+    icon: GitPullRequest,
+    status: "merged" as const,
+    description: [
+      "**Stabilize BrowserView tests across desktop themes**: Addressed theme-dependent background rendering in BrowserView tests so that Dark mode does not cause false failures."
+    ],
+    link: "https://github.com/electron/electron/pull/49316",
+  },
+];
+
+export const ELECTRON_SUMMARY = {
+  merged: ELECTRON_CONTRIBUTIONS.filter((pr) => pr.status === "merged").length,
+  verifiedOn: "21 November 2026",
+  sourceUrl: "https://github.com/electron/electron/pulls?q=is%3Apr+is%3Amerged+author%3AKanishkRanjan",
+};
+
 export const DATA = {
   hero: {
     name: "Kanishk Ranjan",
@@ -67,24 +158,25 @@ export const DATA = {
   },
   about: {
     intro:
-      "I am a second-year Computer Science student at Newton School of Technology, Pune, focused on bridging the gap between academic theory and industry-scale software development. My experience centers on contributing directly to major frameworks like Electron.js and building high-performance full-stack applications.",
+      "I am a Computer Science student at Newton School of Technology, Pune, and an open-source contributor to Electron and Chromium. My merged Electron work spans native macOS menus, desktop capture, custom protocol validation, and developer tools. I also build full-stack applications and cross-platform desktop software.",
     highlights: [
-      "**Open Source Contributor @ElectronJS & Chromium | B.Tech AI/ML Student**",
+      "**Open Source Contributor · Electron & Chromium**",
+      `${ELECTRON_SUMMARY.merged} merged Electron PRs spanning native macOS behavior, screen capture, protocol validation, and developer tools.`,
     ],
     summary: [
       {
         title: "Systems Development",
-        description: "Experience navigating and contributing to large-scale codebases like **Chromium** and **Electron.js** to ship technical patches.",
+        description: "Contributed merged fixes to **Electron** across native macOS menus, desktop capture, custom protocol validation, and BaseWindow developer tools.",
         icon: Terminal
       },
       {
-        title: "Execution Focus",
-        description: "Driven by a 'finisher's mindset' and a refusal to accept workarounds; committed to debugging deep into the source code to resolve the root cause of issues.",
+        title: "Regression Testing",
+        description: "Added **desktopCapturer icon validation tests** and fixed theme-dependent **BrowserWindow** and **BrowserView** tests to prevent regressions and false failures.",
         icon: Check
       },
       {
         title: "Technical Agility",
-        description: "Proven ability to pick up and apply new programming languages and frameworks on the fly to resolve complex bugs.",
+        description: "Work across **C++**, native macOS code, and **TypeScript** to investigate platform behavior and carry fixes through upstream review.",
         icon: Layers
       }
     ],
@@ -145,104 +237,41 @@ export const DATA = {
     {
       name: "Electron.js",
       role: "Contributor",
-      contributions: [
-        {
-          id: "PR #50188",
-          icon: GitPullRequest,
-          status: "open" as const,
-          description: [
-            "**test: add desktopCapturer window icon validation**: Introduced a new test suite to verify that window icons retrieved via desktopCapturer are both present and valid.",
-            "Specifically designed to prevent regressions of issue #48063, ensuring that changes in Apple's internal implementation do not break icon retrieval logic.",
-          ],
-          link: "https://github.com/electron/electron/pull/50188",
-        },
-        {
-          id: "PR #50261",
-          icon: GitPullRequest,
-          status: "merged" as const,
-          description: [
-            "**fix: backport macOS Tahoe app icon retrieval**: Backported a critical fix from Chromium to resolve an issue where running application icons were not correctly retrieved on macOS Tahoe.",
-            "Addresses internal Apple API changes by incorporating updated Chromium logic, ensuring consistent icon rendering across the latest macOS versions (Fixes #48063).",
-          ],
-          link: "https://github.com/electron/electron/pull/50261",
-        },
-        {
-          id: "PR #49364",
-          icon: GitPullRequest,
-          status: "merged" as const,
-          description: [
-            "**test: fix flaky BrowserWindow test**: Fixed flaky test cases in `BrowserWindow` where tests failed when the desktop theme was set to Dark.",
-            "Identified that Chromium applies a #121212 background color in Dark mode, causing failures when loading `about:blank`, and implemented a robust fix to ensure consistent test pass rates.",
-          ],
-          link: "https://github.com/electron/electron/pull/49364",
-        },
-        {
-          id: "PR #49356",
-          icon: GitPullRequest,
-          status: "open" as const,
-          description: [
-            '**feat: Developers tools for BaseWindow**: Fixed a critical "JavaScript error in main process" occurring when triggering `toggleDevTools` in `BaseWindow`.',
-            "Updated the logic to target the currently focused `WebContents` using `webContents.getFocusedWebContents()` instead of `getOwnerBrowserWindow()`, handling edge cases where the DevTools window itself was focused.",
-          ],
-          link: "https://github.com/electron/electron/pull/49356",
-        },
-        {
-          id: "PR #49316",
-          icon: GitPullRequest,
-          status: "merged" as const,
-          description: [
-            "**test: fix flaky BrowserView test**: Resolved flaky tests in `BrowserView` caused by Chromium's dark mode background color inconsistencies.",
-            "Ensured consistent test execution across different OS theme settings by addressing background rendering behaviors.",
-          ],
-          link: "https://github.com/electron/electron/pull/49316",
-        },
-        {
-          id: "PR #49315",
-          icon: GitPullRequest,
-          status: "open" as const,
-          description: [
-            "**feat: ready-to-show event on webContents**: Added `paintWhenInitiallyHidden` option to the `WebContentsView` constructor.",
-            'Enabled renderer "wake up" functionality to correctly fire `ready-to-show` and set initial `visibilityState` to hidden while in the background, addressing issue #43531.',
-          ],
-          link: "https://github.com/electron/electron/pull/49315",
-        },
-        {
-          id: "PR #49219",
-          icon: GitPullRequest,
-          status: "closed" as const,
-          description: [
-            "**fix: resolve appIcon error in desktopCapturer**: Solved a high-DPI asset loss issue on macOS where window icons returned by `desktopCapturer` were low resolution (32x32).",
-            "Created a local copy of window icon utility logic to enforce a target size of 128x128, ensuring Electron receives sharp icons without altering upstream Chromium files.",
-          ],
-          link: "https://github.com/electron/electron/pull/49219",
-        },
-      ],
+      contributions: ELECTRON_CONTRIBUTIONS,
     },
     {
       name: "The Chromium Project",
       role: "Open Source Developer",
       contributions: [
         {
+          id: "CL 7693757",
+          icon: GitCommit,
+          status: "merged" as const,
+          description: [
+            "**Fix DevTools viewport leakage during full-page screenshots**: Fixed a screenshot flow that left DevTools with stale viewport dimensions, causing its UI to overlap other components after capturing pages larger than the browser window.",
+            "Applied device emulation before capture and restored the viewport in a try/finally block, ensuring cleanup even if screenshot capture fails.",
+          ],
+          link: "https://chromium-review.googlesource.com/c/devtools/devtools-frontend/+/7693757",
+        },
+        {
           id: "CL 7239386",
           icon: GitCommit,
           status: "merged" as const,
           description: [
-            "Streamlined the SelectionController logic within the Blink engine to enhance the precision of caret-based text selection.",
-            "Redesigned internal selection checks to ensure that right-clicking an active caret does not trigger unwanted selection expansion, resolving a long-standing UX edge case.",
-            "Managed the end-to-end lifecycle of the patch, including debugging complex rendering engine behaviors and passing Chromium’s rigorous automated test suites (CQ).",
+            "**Fix WebRTC window icon conversion on macOS**: Replaced incorrect manual NSImage-to-ImageSkia conversion with gfx::Image to prevent blank or corrupted icons in the WebRTC window picker.",
+            "Backported this upstream fix into Electron through PR #50188 to resolve desktopCapturer issue #48063.",
           ],
-          link: "https://chromium-review.googlesource.com/q/7239386",
+          link: "https://chromium-review.googlesource.com/c/chromium/src/+/7239386",
         },
         {
           id: "CL 7276941",
           icon: GitCommit,
           status: "merged" as const,
           description: [
-            "Debugged and patched selection controller logic within the Blink rendering engine to fix unexpected selection expansion bugs during right-click events.",
-            "Implemented a cleaner abstraction for platform-dependent selection rules, replacing legacy #if BUILDFLAGS macros with a centralized logic check.",
-            "Collaborated with the Chromium community to review and merge changes impacting text interaction and accessibility in editable web content.",
+            "**Preserve the caret when right-clicking on macOS**: Updated Blink’s SelectionController to skip word selection when a right-click matches the existing caret position, preserving native macOS context-menu behavior.",
+            "Prevented context-menu paste from unexpectedly replacing a whole word and added a regression test for right-clicking an existing caret.",
           ],
-          link: "https://chromium-review.googlesource.com/q/7276941",
+          link: "https://chromium-review.googlesource.com/c/chromium/src/+/7276941",
         },
       ],
     },
@@ -674,9 +703,9 @@ export const DATA = {
       icon: Trophy,
     },
     {
-      value: "9+",
-      label: "Open Source PRs",
-      detail: "Electron, Chromium, VS Code",
+      value: String(ELECTRON_SUMMARY.merged),
+      label: "Merged Electron PRs",
+      detail: `Verified ${ELECTRON_SUMMARY.verifiedOn}`,
       icon: GitPullRequest,
     },
     {

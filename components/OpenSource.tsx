@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-import { DATA } from "@/lib/data";
+import { DATA, ELECTRON_SUMMARY } from "@/lib/data";
 
 const projects = DATA.openSource;
 
@@ -23,6 +23,23 @@ export function OpenSource() {
               <span className="text-muted-foreground font-medium">
                 {project.role}
               </span>
+              {project.name === "Electron.js" && (
+                <div className="mt-5 space-y-3">
+                  <p className="text-base text-foreground">
+                    {ELECTRON_SUMMARY.merged} merged PRs
+                  </p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Native macOS behavior, display capture, protocol validation,
+                    developer tools, and regression testing.
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Verified {ELECTRON_SUMMARY.verifiedOn}.{" "}
+                    <a href={ELECTRON_SUMMARY.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-foreground">
+                      View merged Electron PRs
+                    </a>
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="space-y-12">
@@ -48,22 +65,16 @@ export function OpenSource() {
                         href={item.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-xs font-mono text-muted-foreground bg-secondary/50 px-2 py-1 rounded hover:text-foreground hover:bg-secondary transition-colors"
+                        className="flex items-center gap-2 text-sm font-mono text-muted-foreground bg-secondary/50 px-2 py-1 rounded hover:text-foreground hover:bg-secondary transition-colors"
                       >
                         <item.icon className="w-3 h-3" />
                         {item.id}
                       </a>
                       {item.status && (
                         <span
-                          className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${
-                            item.status === "merged"
-                              ? "bg-purple-500/10 text-purple-500"
-                              : item.status === "closed"
-                              ? "bg-red-500/10 text-red-500"
-                              : "bg-green-500/10 text-green-500"
-                          }`}
+                          className="text-sm font-semibold px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-500"
                         >
-                          {item.status}
+                          Merged
                         </span>
                       )}
                     </div>
@@ -73,7 +84,7 @@ export function OpenSource() {
                     {item.description.map((point, i) => (
                       <li
                         key={i}
-                        className="text-muted-foreground text-sm leading-relaxed relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-muted-foreground/50"
+                        className="text-muted-foreground text-base leading-relaxed relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-muted-foreground/50"
                       >
                         {point.split(/\*\*(.*?)\*\*/g).map((part, index) =>
                           index % 2 === 1 ? (

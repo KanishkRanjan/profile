@@ -1,6 +1,6 @@
 "use client";
 
-import { DATA } from "@/lib/data";
+import { DATA, ELECTRON_SUMMARY } from "@/lib/data";
 import { Clock } from "@/components/Clock";
 
 export function ATSView() {
@@ -60,10 +60,15 @@ export function ATSView() {
       {DATA.openSource.map((project, index) => (
         <div key={index}>
           <div>{`### ${project.name} (${project.role})`}</div>
+          {project.name === "Electron.js" && (
+            <div>
+              {`${ELECTRON_SUMMARY.merged} merged PRs. Verified ${ELECTRON_SUMMARY.verifiedOn}.`}
+            </div>
+          )}
           <br />
           {project.contributions.map((contrib, i) => (
             <div key={i}>
-              <div>{`* [${contrib.id}](${contrib.link}) - ${contrib.status === "merged" ? "Merged" : contrib.status === "closed" ? "Closed" : "Open"}`}</div>
+              <div>{`* [${contrib.id}](${contrib.link}) - Merged`}</div>
               {contrib.description.map((desc, j) => (
                 <div
                   key={j}
