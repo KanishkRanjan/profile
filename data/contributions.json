@@ -6,8 +6,8 @@
       "id": "electron",
       "name": "Electron.js",
       "role": "Contributor",
-      "summary": "Native macOS behavior, display capture, protocol validation, developer tools, and regression testing.",
-      "sourceUrl": "https://github.com/electron/electron/pulls?q=is%3Apr+is%3Amerged+author%3AKanishkRanjan",
+      "summary": "Native macOS behavior, display capture, protocol validation, developer tools, documentation, and regression testing.",
+      "sourceUrl": "https://github.com/pulls?q=is%3Apr+is%3Amerged+author%3AKanishkRanjan+org%3Aelectron",
       "contributions": [
         {
           "sourceId": "electron",
@@ -116,6 +116,18 @@
           ],
           "link": "https://github.com/electron/electron/pull/49364",
           "mergedAt": "2026-01-28T05:47:02.000Z"
+        },
+        {
+          "sourceId": "electron-website",
+          "number": 962,
+          "id": "PR #962",
+          "title": "fix: replaces wrong image address in apps page",
+          "status": "merged",
+          "description": [
+            "**Fix Electron app icon paths on the apps page**: Updated app icon URLs to include the `apps/` repository prefix, restoring valid 128px app icon addresses on Electron's website."
+          ],
+          "link": "https://github.com/electron/website/pull/962",
+          "mergedAt": "2025-12-26T04:42:17.000Z"
         }
       ]
     },
