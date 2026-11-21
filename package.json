@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "sync:contributions": "node scripts/contribution-sync.mjs",
-    "test:contributions": "node --test scripts/contribution-sync.test.mjs"
+    "test:contributions": "node --test scripts/*.test.mjs"
   },
   "dependencies": {
     "class-variance-authority": "0.7.1",
