@@ -1,3 +1,4 @@
+import contributionSnapshot from "@/data/contributions.json";
 import {
   SiTypescript,
   SiJavascript,
@@ -58,95 +59,25 @@ const ShadcnIcon =
     </svg>
   ));
 
-// Merged contributions verified against GitHub on 21 November 2026.
-export const ELECTRON_CONTRIBUTIONS = [
-  {
-    id: "PR #55057",
-    icon: GitPullRequest,
-    status: "merged" as const,
-    description: [
-      "**Preserve native macOS menu titles and icons**: Updated native menu state handling to preserve AppKit-managed titles and default icons on macOS Tahoe, including Settings and submenu icons, while still applying explicit changes from JavaScript."
-    ],
-    link: "https://github.com/electron/electron/pull/55057",
-  },
-  {
-    id: "PR #52519",
-    icon: GitPullRequest,
-    status: "merged" as const,
-    description: [
-      "**Validate custom protocol scheme names**: Added RFC 3986 scheme-name validation to protocol.registerSchemesAsPrivileged() before custom schemes are registered or forwarded to child processes."
-    ],
-    link: "https://github.com/electron/electron/pull/52519",
-  },
-  {
-    id: "PR #52455",
-    icon: GitPullRequest,
-    status: "merged" as const,
-    description: [
-      "**Support the restrictOwnAudio constraint**: Fixed display-media audio capture to honor restrictOwnAudio and suppressLocalAudioPlayback by selecting loopbackWithoutChrome on supported platforms, excluding local app playback."
-    ],
-    link: "https://github.com/electron/electron/pull/52455",
-  },
-  {
-    id: "PR #51155",
-    icon: GitPullRequest,
-    status: "merged" as const,
-    description: [
-      "**Restore macOS Tahoe menu role icons**: Refreshed native menu actions to restore system-provided role icons after menus were reopened. Followed up in #55057 to also preserve submenu icons and AppKit-managed titles."
-    ],
-    link: "https://github.com/electron/electron/pull/51155",
-  },
-  {
-    id: "PR #49356",
-    icon: GitPullRequest,
-    status: "merged" as const,
-    description: [
-      "**Fix Toggle Developer Tools for BaseWindow**: Fixed a main-process JavaScript error by targeting the focused WebContents when toggling DevTools, allowing the menu role to work with BaseWindow."
-    ],
-    link: "https://github.com/electron/electron/pull/49356",
-  },
-  {
-    id: "PR #50261",
-    icon: GitPullRequest,
-    status: "merged" as const,
-    description: [
-      "**Add desktopCapturer icon regression tests**: Added tests that verify captured window icons are present and valid, guarding against regressions like the macOS Tahoe icon retrieval failure in #48063."
-    ],
-    link: "https://github.com/electron/electron/pull/50261",
-  },
-  {
-    id: "PR #50188",
-    icon: GitPullRequest,
-    status: "merged" as const,
-    description: [
-      "**Backport the macOS Tahoe app icon fix**: Backported Chromium CL 7239386 into Electron to restore running application icon retrieval on macOS Tahoe, resolving #48063."
-    ],
-    link: "https://github.com/electron/electron/pull/50188",
-  },
-  {
-    id: "PR #49364",
-    icon: GitPullRequest,
-    status: "merged" as const,
-    description: [
-      "**Stabilize BrowserWindow tests across desktop themes**: Fixed test failures caused by Chromium applying a dark background to about:blank when the desktop uses Dark mode."
-    ],
-    link: "https://github.com/electron/electron/pull/49364",
-  },
-  {
-    id: "PR #49316",
-    icon: GitPullRequest,
-    status: "merged" as const,
-    description: [
-      "**Stabilize BrowserView tests across desktop themes**: Addressed theme-dependent background rendering in BrowserView tests so that Dark mode does not cause false failures."
-    ],
-    link: "https://github.com/electron/electron/pull/49316",
-  },
-];
+export const SYNCED_CONTRIBUTIONS = contributionSnapshot.groups
+  .filter((group) => group.contributions.length > 0)
+  .map((group) => ({
+    ...group,
+    contributions: group.contributions.map((item) => ({
+      ...item,
+      icon: item.id.startsWith("CL ") ? GitCommit : GitPullRequest,
+    })),
+  }));
+
+export const ELECTRON_CONTRIBUTIONS =
+  SYNCED_CONTRIBUTIONS.find((group) => group.id === "electron")?.contributions ?? [];
 
 export const ELECTRON_SUMMARY = {
-  merged: ELECTRON_CONTRIBUTIONS.filter((pr) => pr.status === "merged").length,
-  verifiedOn: "21 November 2026",
-  sourceUrl: "https://github.com/electron/electron/pulls?q=is%3Apr+is%3Amerged+author%3AKanishkRanjan",
+  merged: ELECTRON_CONTRIBUTIONS.length,
+  verifiedOn: new Intl.DateTimeFormat("en-GB", {
+    day: "numeric", month: "long", year: "numeric", timeZone: "UTC",
+  }).format(new Date(`${contributionSnapshot.verifiedOn}T00:00:00Z`)),
+  sourceUrl: SYNCED_CONTRIBUTIONS.find((group) => group.id === "electron")?.sourceUrl ?? "",
 };
 
 export const DATA = {
@@ -248,82 +179,7 @@ export const DATA = {
     },
   ],
   openSource: [
-    {
-      name: "Electron.js",
-      role: "Contributor",
-      contributions: ELECTRON_CONTRIBUTIONS,
-    },
-    {
-      name: "The Chromium Project",
-      role: "Open Source Developer",
-      contributions: [
-        {
-          id: "CL 7693757",
-          icon: GitCommit,
-          status: "merged" as const,
-          description: [
-            "**Fix DevTools viewport leakage during full-page screenshots**: Fixed a screenshot flow that left DevTools with stale viewport dimensions, causing its UI to overlap other components after capturing pages larger than the browser window.",
-            "Applied device emulation before capture and restored the viewport in a try/finally block, ensuring cleanup even if screenshot capture fails.",
-          ],
-          link: "https://chromium-review.googlesource.com/c/devtools/devtools-frontend/+/7693757",
-        },
-        {
-          id: "CL 7239386",
-          icon: GitCommit,
-          status: "merged" as const,
-          description: [
-            "**Fix WebRTC window icon conversion on macOS**: Replaced incorrect manual NSImage-to-ImageSkia conversion with gfx::Image to prevent blank or corrupted icons in the WebRTC window picker.",
-            "Backported this upstream fix into Electron through PR #50188 to resolve desktopCapturer issue #48063.",
-          ],
-          link: "https://chromium-review.googlesource.com/c/chromium/src/+/7239386",
-        },
-        {
-          id: "CL 7276941",
-          icon: GitCommit,
-          status: "merged" as const,
-          description: [
-            "**Preserve the caret when right-clicking on macOS**: Updated Blink’s SelectionController to skip word selection when a right-click matches the existing caret position, preserving native macOS context-menu behavior.",
-            "Prevented context-menu paste from unexpectedly replacing a whole word and added a regression test for right-clicking an existing caret.",
-          ],
-          link: "https://chromium-review.googlesource.com/c/chromium/src/+/7276941",
-        },
-      ],
-    },
-    {
-      name: "KDE Plasma",
-      role: "Contributor",
-      contributions: [
-        {
-          id: "KGlobalAccelD MR !134",
-          icon: GitPullRequest,
-          status: "merged" as const,
-          description: [
-            "**Fix Unicode handling in D-Bus object paths**: Fixed character truncation in KGlobalAccelD that allowed non-ASCII characters to pass ASCII validation and produce invalid component paths. Preserved the full Unicode value using char16_t.",
-            "Extracted path sanitization into a testable helper and added regression coverage for ASCII, accented Latin, Polish, and CJK component names.",
-          ],
-          link: "https://invent.kde.org/plasma/kglobalacceld/-/merge_requests/134",
-        },
-        {
-          id: "Plasma Browser Integration MR !210",
-          icon: GitPullRequest,
-          status: "merged" as const,
-          description: [
-            "**Fix Microsoft Teams screen sharing with media controls enabled**: Replaced temporary DOM insertion of detached media players with event-based discovery, preventing the browser extension from disrupting Teams screen sharing.",
-            "Passed detached audio and video elements to the content script through an event’s relatedTarget, preserving media-player detection without inserting or removing those elements from the page.",
-          ],
-          link: "https://invent.kde.org/plasma/plasma-browser-integration/-/merge_requests/210",
-        },
-        {
-          id: "Plasma Browser Integration MR !211",
-          icon: GitPullRequest,
-          status: "merged" as const,
-          description: [
-            "**Clarify native-host message callbacks**: Renamed addCallback to addPortCallback and callbacks to portCallbacks throughout the extension, distinguishing native-host port messages from runtime callbacks and resolving existing TODOs.",
-          ],
-          link: "https://invent.kde.org/plasma/plasma-browser-integration/-/merge_requests/211",
-        },
-      ],
-    },
+    ...SYNCED_CONTRIBUTIONS,
     {
       name: "Visual Studio Code",
       role: "Contributor",

@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "sync:contributions": "node scripts/contribution-sync.mjs",
+    "test:contributions": "node --test scripts/contribution-sync.test.mjs"
   },
   "dependencies": {
     "class-variance-authority": "0.7.1",
