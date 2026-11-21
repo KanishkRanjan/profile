@@ -5,8 +5,8 @@
       "id": "electron",
       "name": "Electron.js",
       "role": "Contributor",
-      "summary": "Native macOS behavior, display capture, protocol validation, developer tools, and regression testing.",
-      "sourceUrl": "https://github.com/electron/electron/pulls?q=is%3Apr+is%3Amerged+author%3AKanishkRanjan"
+      "summary": "Native macOS behavior, display capture, protocol validation, developer tools, documentation, and regression testing.",
+      "sourceUrl": "https://github.com/pulls?q=is%3Apr+is%3Amerged+author%3AKanishkRanjan+org%3Aelectron"
     },
     {
       "id": "chromium",
@@ -72,6 +72,22 @@
         "49316": {
           "description": [
             "**Stabilize BrowserView tests across desktop themes**: Addressed theme-dependent background rendering in BrowserView tests so that Dark mode does not cause false failures."
+          ]
+        }
+      }
+    },
+    {
+      "id": "electron-website",
+      "provider": "github",
+      "group": "electron",
+      "project": "electron/website",
+      "author": "KanishkRanjan",
+      "labelPrefix": "PR #",
+      "exclude": [],
+      "overrides": {
+        "962": {
+          "description": [
+            "**Fix Electron app icon paths on the apps page**: Updated app icon URLs to include the `apps/` repository prefix, restoring valid 128px app icon addresses on Electron's website."
           ]
         }
       }
